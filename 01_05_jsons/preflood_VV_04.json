@@ -1,0 +1,78 @@
+{
+    "request": {
+        "headers": {
+            "accept": "image/tiff",
+            "content-type": "application/json"
+        },
+        "payload": {
+            "evalscript": " \n//VERSION=3 \nfunction setup() { \n  return {\n    input: [\"VV\", \"dataMask\"], \n    output: [ \n      { id: \"default\", bands: 4 }, \n      { id: \"eobrowserStats\", bands: 1 }, \n      { id: \"dataMask\", bands: 1 }, \n    ], \n  }; \n} \nfunction evaluatePixel(samples) { \n  const value = Math.max(0, Math.log(samples.VV) * 0.21714724095 + 1); \n  return { \n    default: [value, value, value, samples.dataMask], \n    eobrowserStats: [Math.max(-30, (10 * Math.log10(samples.VV)))], \n    dataMask: [samples.dataMask], \n  }; \n} \n// --- \n/* \n  // displays VV in decibels from -20 to 0 \n  // the following is simplified below \n  // var log = 10 * Math.log(VV) / Math.LN10; \n  // var val = Math.max(0, (log + 20) / 20); \n  return [Math.max(0, Math.log(VV) * 0.21714724095 + 1)]; \n*/ \n",
+            "input": {
+                "bounds": {
+                    "bbox": [
+                        -7377043.971,
+                        2087185.762,
+                        -7372043.971,
+                        2092185.762
+                    ],
+                    "properties": {
+                        "crs": "http://www.opengis.net/def/crs/EPSG/0/3857"
+                    }
+                },
+                "data": [
+                    {
+                        "dataFilter": {
+                            "acquisitionMode": "IW",
+                            "mosaickingOrder": "mostRecent",
+                            "polarization": "DV",
+                            "resolution": "HIGH",
+                            "timeRange": {
+                                "from": "2017-09-01T00:00:00Z",
+                                "to": "2017-09-16T23:59:59Z"
+                            }
+                        },
+                        "processing": {
+                            "backCoeff": "GAMMA0_TERRAIN",
+                            "demInstance": "COPERNICUS",
+                            "orthorectify": true,
+                            "speckleFilter": {
+                                "type": "LEE",
+                                "windowSizeX": 3,
+                                "windowSizeY": 3
+                            }
+                        },
+                        "type": "sentinel-1-grd"
+                    }
+                ]
+            },
+            "output": {
+                "height": 474.3100863719954,
+                "responses": [
+                    {
+                        "format": {
+                            "type": "image/tiff"
+                        },
+                        "identifier": "default"
+                    }
+                ],
+                "width": 474.37555468171587
+            }
+        },
+        "timestamp": "2025-02-19T17:24:06.287577",
+        "url": "https://sh.dataspace.copernicus.eu/api/v1/process"
+    },
+    "response": {
+        "elapsed": 1.677172,
+        "headers": {
+            "access-control-allow-credentials": "true",
+            "access-control-allow-headers": "origin,content-type,accept,accept-crs,authorization,cache-control",
+            "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS, HEAD, PATCH",
+            "access-control-allow-origin": "*",
+            "access-control-max-age": "3600",
+            "content-type": "image/tiff",
+            "date": "Wed, 19 Feb 2025 22:24:04 GMT",
+            "transfer-encoding": "chunked",
+            "x-processingunits-spent": "1.4284515806571108"
+        },
+        "status_code": 200
+    }
+}
