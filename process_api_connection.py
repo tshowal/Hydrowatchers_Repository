@@ -116,12 +116,17 @@ send request
 # copy and pase from excel sheet be sure to include commas between values
 
 #this is changing depending on grid being pulled
-bbox1 = BBox(bbox=[-7392043.971,	2092185.762,	-7387043.971,	2087185.762], crs=CRS.POP_WEB)
-bbox2 = BBox(bbox=[-7387043.971,	2092185.762, -7382043.971,	2087185.762], crs=CRS.POP_WEB)
-bbox3 = BBox(bbox=[-7382043.971,	2092185.762,	-7377043.971,	2087185.762], crs=CRS.POP_WEB)
-bbox4 = BBox(bbox=[-7377043.971,	2092185.762,	-7372043.971,	2087185.762], crs=CRS.POP_WEB)
-bbox5 = BBox(bbox=[-7372043.971,	2092185.762,	-7367043.971,	2087185.762], crs=CRS.POP_WEB)
+bbox1 = BBox(bbox=[-7392043.971,	2092185.762,	-7387043.971,	2087185.762], crs=CRS.WGS84)
+bbox2 = BBox(bbox=[-7387043.971,	2092185.762, -7382043.971,	2087185.762], crs=CRS.WGS84)
+bbox3 = BBox(bbox=[-7382043.971,	2092185.762,	-7377043.971,	2087185.762], crs=CRS.WGS84)
+bbox4 = BBox(bbox=[-7377043.971,	2092185.762,	-7372043.971,	2087185.762], crs=CRS.WGS84)
+bbox5 = BBox(bbox=[-7372043.971,	2092185.762,	-7367043.971,	2087185.762], crs=CRS.WGS84)
 
+size1 = [474.3649932882683, 474.3100863719954]
+size2 = [474.37555468171587, 474.3100863719954]
+size3 = [474.3755546818502, 474.3100863719954]
+size4 = [474.37555468171587, 474.3100863719954]
+size5 = [474.37555468171587, 474.3100863719954]
 
 # namming convention
 # preflood_VV_gridnumber
@@ -133,22 +138,22 @@ bbox5 = BBox(bbox=[-7372043.971,	2092185.762,	-7367043.971,	2087185.762], crs=CR
 #post flood time: '2017-09-20', '2017-09-28'
 
 request = SentinelHubRequest(
-    data_folder="postflood_VV_05", #this is changing every pull
-    evalscript=evalscriptVV,
+    data_folder="postflood_VH_01", #this is changing every pull
+    evalscript=evalscriptVH,
     input_data=[
         SentinelHubRequest.input_data(
             data_collection=DataCollection.SENTINEL1_IW.define_from(
                     "s1iw", service_url=config.sh_base_url
                 ),          
-            time_interval=('2017-09-20', '2017-09-28'), #this is chnaging depending on pre or post flood         
+            time_interval=('2017-09-01', '2017-09-16'), #this is chnaging depending on pre or post flood         
             other_args={"dataFilter": {"mosaickingOrder": "mostRecent"},"processing": {"backCoeff": "GAMMA0_TERRAIN","orthorectify": True,"demInstance": "COPERNICUS","speckleFilter": {"type": "LEE","windowSizeX": 3,"windowSizeY": 3}}}
         ),
     ],
     responses=[
         SentinelHubRequest.output_response('default', MimeType.TIFF),
     ],
-    bbox=bbox5,
-    size=[474.37555468171587, 474.3100863719954],
+    bbox=bbox1,
+    size=size1,
     config=config
 )
 
@@ -201,3 +206,5 @@ df = da[0].to_pandas()
 df['y'] = df.index
 df = pd.melt(df, id_vars='y')
 df
+
+
