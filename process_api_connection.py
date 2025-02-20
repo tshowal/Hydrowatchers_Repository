@@ -31,8 +31,8 @@ from sentinelhub import SHConfig
 
 
 config = SHConfig()
-config.sh_client_id = '<client id>'
-config.sh_client_secret = '<client secret>'
+config.sh_client_id = '<>'
+config.sh_client_secret = '<>'
 config.sh_base_url = 'https://sh.dataspace.copernicus.eu'
 config.sh_token_url = 'https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token'
 config.save("cdse")
@@ -138,7 +138,7 @@ size5 = [528.0843937852881, 500.93770856969985]
 #post flood time: '2017-09-20', '2017-09-28'
 
 request = SentinelHubRequest(
-    data_folder="postflood_VH_01", #this is changing every pull
+    data_folder="preflood_VH_05", #this is changing every pull
     evalscript=evalscriptVH,
     input_data=[
         SentinelHubRequest.input_data(
@@ -152,8 +152,8 @@ request = SentinelHubRequest(
     responses=[
         SentinelHubRequest.output_response('default', MimeType.TIFF),
     ],
-    bbox=bbox1,
-    size=size1,
+    bbox=bbox5,
+    size=size5,
     config=config
 )
 
