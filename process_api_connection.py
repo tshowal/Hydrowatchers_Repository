@@ -31,8 +31,8 @@ from sentinelhub import SHConfig
 
 
 config = SHConfig()
-config.sh_client_id = 'sh-ac01828e-eb8f-4ff4-b9de-7630c5312236'
-config.sh_client_secret = '2NHA7aykyeBqu3NZnrI7n9eVU5NU8oFb'
+config.sh_client_id = '<client id>'
+config.sh_client_secret = '<client secret>'
 config.sh_base_url = 'https://sh.dataspace.copernicus.eu'
 config.sh_token_url = 'https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token'
 config.save("cdse")
@@ -116,17 +116,17 @@ send request
 # copy and pase from excel sheet be sure to include commas between values
 
 #this is changing depending on grid being pulled
-bbox1 = BBox(bbox=[-7392043.971,	2092185.762,	-7387043.971,	2087185.762], crs=CRS.WGS84)
-bbox2 = BBox(bbox=[-7387043.971,	2092185.762, -7382043.971,	2087185.762], crs=CRS.WGS84)
-bbox3 = BBox(bbox=[-7382043.971,	2092185.762,	-7377043.971,	2087185.762], crs=CRS.WGS84)
-bbox4 = BBox(bbox=[-7377043.971,	2092185.762,	-7372043.971,	2087185.762], crs=CRS.WGS84)
-bbox5 = BBox(bbox=[-7372043.971,	2092185.762,	-7367043.971,	2087185.762], crs=CRS.WGS84)
+bbox1 = BBox(bbox=[-66.4386081, 18.46376767,	-66.3886081,	18.41876767], crs=CRS.WGS84)
+bbox2 = BBox(bbox=[-66.3886081,	18.46376767,	-66.3386081,	18.41876767], crs=CRS.WGS84)
+bbox3 = BBox(bbox=[-66.3386081,	18.46376767,	-66.2886081,	18.41876767], crs=CRS.WGS84)
+bbox4 = BBox(bbox=[-66.2886081,	18.46376767,	-66.2386081,	18.41876767], crs=CRS.WGS84)
+bbox5 = BBox(bbox=[-66.2386081,	18.46376767,	-66.1886081,	18.41876767], crs=CRS.WGS84)
 
-size1 = [474.3649932882683, 474.3100863719954]
-size2 = [474.37555468171587, 474.3100863719954]
-size3 = [474.3755546818502, 474.3100863719954]
-size4 = [474.37555468171587, 474.3100863719954]
-size5 = [474.37555468171587, 474.3100863719954]
+size1 = [528.0843937854222, 500.93770856969985]
+size2 = [528.0843937852881, 500.93770856969985]
+size3 = [528.0843937852881, 500.93770856969985]
+size4 = [528.0843937854222, 500.93770856969985]
+size5 = [528.0843937852881, 500.93770856969985]
 
 # namming convention
 # preflood_VV_gridnumber
@@ -170,11 +170,6 @@ for folder, _, filenames in os.walk(request.data_folder):
         print(os.path.join(folder, filename))
 
 layer
-
-
-
-
-
 
 """
 read geotiff as a dataframe
