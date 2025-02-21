@@ -9,10 +9,10 @@ import rioxarray as rxr
 """"
 read pre and post flood images
 """
-preflood_VV = 'flood_images_10m_resolution/preflood_VV_decibel_gamma0_2017-09-09.tiff'
-preflood_VH = 'flood_images_10m_resolution/preflood_VH_decibel_gamma0_2017-09-09.tiff'
-postflood_VV= 'flood_images_10m_resolution/postflood_VV_decibel_gamma0_2017-09-22.tiff'
-postflood_VH = 'flood_images_10m_resolution/postflood_VH_decibel_gamma0_2017-09-22.tiff'
+preflood_VV = 'grid_01_05_tiffs/preflood_VV_01.tiff'
+preflood_VH = 'grid_01_05_tiffs/preflood_VH_01.tiff'
+postflood_VV= 'grid_01_05_tiffs/postflood_VV_01.tiff'
+postflood_VH = 'grid_01_05_tiffs/postflood_VH_01.tiff'
 
 
 preflood_VVtiff = rasterio.open(preflood_VV)
@@ -57,6 +57,7 @@ df_preflood_vv = da[0].to_pandas()
 df_preflood_vv['y'] = df_preflood_vv.index
 df_preflood_vv = pd.melt(df_preflood_vv, id_vars='y')
 df_preflood_vv=df_preflood_vv.rename(columns={'value':'preflood_vv'})
+df_preflood_vv
 
 da = rxr.open_rasterio(postflood_VV, masked=True)
 #da = da.rio.reproject("EPSG:4326")
@@ -72,7 +73,7 @@ df_preflood_vh['y'] = df_preflood_vh.index
 df_preflood_vh = pd.melt(df_preflood_vh, id_vars='y')
 df_preflood_vh=df_preflood_vh.rename(columns={'value':'preflood_vh'})
 
-da = rxr.open_rasterio(postflood_VV, masked=True)
+da = rxr.open_rasterio(postflood_VH, masked=True)
 #da = da.rio.reproject("EPSG:4326")
 df_postflood_vh = da[0].to_pandas()
 df_postflood_vh['y'] = df_postflood_vh.index
@@ -87,11 +88,34 @@ join2= pd.merge(df_preflood_vv, df_preflood_vh, on=['y', 'x'], how='inner')
 df = pd.merge(join1,join2, on=['y', 'x'], how='inner')
 df
 
-df['prefloodvv-postfloodvv'] = df['preflood_vv'] - df['postflood_vv']
-df
+df.to_csv("csvs/csv_01.csv")
 
-df['prefloodvh-postfloodvh'] = df['preflood_vh'] - df['postflood_vh']
-df
+df1 = df
+df2 = df
+df3 = df
+df4 = df
+df5 = df
+
+
+df1
+df2
+df3
+df4
+df5
+df_concat = pd.concat([df1, df2, df3, df4, df5])
+df_concat
+
+df_concat.to_csv('01_05.csv')
+
+
+
+
+
+# df['prefloodvv-postfloodvv'] = df['preflood_vv'] - df['postflood_vv']
+# df
+
+# df['prefloodvh-postfloodvh'] = df['preflood_vh'] - df['postflood_vh']
+# df
 """"
 not sure what to do with the data from here
 """
