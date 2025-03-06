@@ -31,8 +31,8 @@ from sentinelhub import SHConfig
 
 
 config = SHConfig()
-config.sh_client_id = '<>'
-config.sh_client_secret = '<>'
+config.sh_client_id = 'sh-ac01828e-eb8f-4ff4-b9de-7630c5312236'
+config.sh_client_secret = '2NHA7aykyeBqu3NZnrI7n9eVU5NU8oFb'
 config.sh_base_url = 'https://sh.dataspace.copernicus.eu'
 config.sh_token_url = 'https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token'
 config.save("cdse")
@@ -60,11 +60,12 @@ function setup() {
 }
 
 function evaluatePixel(samples) {
-  const value = Math.max(0, Math.log(samples.VH) * 0.21714724095 + 1);
+  let decibels = Math.max(0, Math.log(samples.VH) * 0.21714724095 + 1);
   return {
-    default: [value, value, value, samples.dataMask],
+    default: [decibels, samples.dataMask],
     eobrowserStats: [Math.max(-30, (10 * Math.log10(samples.VH)))],
     dataMask: [samples.dataMask],
+    sampleType: "FLOAT32"
   };
 }
 // ---
@@ -137,9 +138,33 @@ size5 = [528.0843937852881, 500.93770856969985]
 #pre flood time: '2017-09-01', '2017-09-16'
 #post flood time: '2017-09-20', '2017-09-28'
 
+evalscriptVH_decible = """
+//VERSION=3
+function setup() {
+  return {
+    input: [{
+      bands: ["VV", "VH", "dataMask"]
+    }],
+    output: {
+      bands: 2, 
+      sampleType: "FLOAT32" 
+    }
+  }
+}
+function evaluatePixel(samples){
+   let decibels = [10 * Math.log(samples.VH) / Math.LN10]
+   return [decibels, samples.dataMask]
+}
+
+
+"""
+
+#[10 * Math.log(samples.VV) / Math.LN10]
+#Math.max(0, Math.log(samples.VV) * 0.21714724095 + 1)
+
 request = SentinelHubRequest(
     data_folder="preflood_VH_05", #this is changing every pull
-    evalscript=evalscriptVH,
+    evalscript=evalscriptVH_decible,
     input_data=[
         SentinelHubRequest.input_data(
             data_collection=DataCollection.SENTINEL1_IW.define_from(
@@ -171,35 +196,35 @@ for folder, _, filenames in os.walk(request.data_folder):
 
 layer
 
-"""
-read geotiff as a dataframe
-"""
+# """
+# read geotiff as a dataframe
+# """
 
-import rasterio
-import rasterio.plot
-import matplotlib
-import rioxarray as rxr 
+# import rasterio
+# import rasterio.plot
+# import matplotlib
+# import rioxarray as rxr 
 
-file = 'test/85d04f52ed4133d55e72d84a476ef5a6/response.tiff' #file path of the geotiff you saved
-#reccomend renaming response.tiff to the naming convention.tiff instead, we can then place all of our tiff images into a shared folder on git hub
-tiff = rasterio.open(file)
-tiff
+# file = 'test/85d04f52ed4133d55e72d84a476ef5a6/response.tiff' #file path of the geotiff you saved
+# #reccomend renaming response.tiff to the naming convention.tiff instead, we can then place all of our tiff images into a shared folder on git hub
+# tiff = rasterio.open(file)
+# tiff
 
-with rasterio.open(file) as src:
-    # Read a specific band (e.g., band 1)
-    band_number = 1
-    band_data = src.read(band_number)
+# with rasterio.open(file) as src:
+#     # Read a specific band (e.g., band 1)
+#     band_number = 1
+#     band_data = src.read(band_number)
 
-band_data
+# band_data
 
-#save it as a pandas data frame
+# #save it as a pandas data frame
 
-import pandas as pd
-da = rxr.open_rasterio(file, masked=True)
-#da = da.rio.reproject("EPSG:4326")
-df = da[0].to_pandas()
-df['y'] = df.index
-df = pd.melt(df, id_vars='y')
-df
+# import pandas as pd
+# da = rxr.open_rasterio(file, masked=True)
+# #da = da.rio.reproject("EPSG:4326")
+# df = da[0].to_pandas()
+# df['y'] = df.index
+# df = pd.melt(df, id_vars='y')
+# df
 
 
